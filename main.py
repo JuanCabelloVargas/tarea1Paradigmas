@@ -44,7 +44,7 @@ class Menu:
 
 
 g1 = Menu()
-g1.load_robots("robots01.json")
+g1.load_robots("data.json")
 g1.start()
     
 
