@@ -1,5 +1,6 @@
 import json
 import random
+import csv
 from abc import ABC, abstractmethod
 from robots import Robot, Attack
 from competition import League
@@ -40,6 +41,13 @@ class Menu:
         print("\nResultados de la Liga:")
         for robot, results in competicion.results.items():
             print(f"{robot}: {results['victorias']} victorias, {results['derrotas']} derrotas")
+
+        with open('results.csv', mode='w',newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['Robot','Victorias', 'Derrotas', 'Turnos'])
+            for robot, results in competicion.results.items():
+                writer.writerow([robot,results['victorias'], results['derrotas'],results.get('turnos',0)])
+
         pass
 
 

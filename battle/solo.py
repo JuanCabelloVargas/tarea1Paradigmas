@@ -1,5 +1,6 @@
 from battle.battle_main import Battle
 import random
+import matplotlib.pyplot as plt
 
 #Only for references
 from robots import Robot, Attack
@@ -35,13 +36,14 @@ class SoloBattle(Battle):
                 self.stats[self.r1_name]['attacks'].append(attack_1.get_description())
                 #Logs
                 print(f"\n{self.robot_1.get_name()} realiza {attack_1.get_description()}\n")
-                print(f"{self.robot_2.get_name()} recibe el ataque; ahora su nergia es {self.robot_2.get_energy()}")
+                print(f"{self.robot_2.get_name()} recibe el ataque; ahora su energia es {self.robot_2.get_energy()}")
             
             if self.robot_2.get_energy() <= 0:
                 input(f"\n{self.r1_name} ha ganado.\nPresione 'enter' para continuar.\n>")
                 print('-' * 32)
                 self.stats[self.r1_name]['winner'] = True
                 self.stats[self.r1_name]['energy'] = self.robot_1.get_energy()
+                self.generate_attack_usage_graph()
                 return self.robot_1, self.robot_2
             
             #turnos pares
@@ -59,7 +61,10 @@ class SoloBattle(Battle):
                 print('-' * 32)
                 self.stats[self.r2_name]['winner'] = True
                 self.stats[self.r2_name]['energy'] = self.robot_2.get_energy()
+                self.generate_attack_usage_graph()
                 return self.robot_2, self.robot_1
+            
+
     
     def manual_mode(self):
         return super().manual_mode()
@@ -67,6 +72,21 @@ class SoloBattle(Battle):
     def get_stats(self) -> dict:
         return self.stats
         
+    def generate_attack_usage_graph(self):
+        for robot_name in [self.r1_name, self.r2_name]:
+            attacks = self.stats[robot_name]['attacks']
+            attack_counts = {attack: attacks.count(attack) for attack in set(attacks)}
+
+            plt.figure(figsize=(10,6))
+            plt.bar(attack_counts.keys(), attack_counts.values())
+            plt.title(f'Cantidad de ataques de {robot_name}')
+            plt.xlabel('Nombre del ataque')
+            plt.ylabel('Cantidad de usos')
+            plt.xticks(rotation=45)
+            plt.tight_layout()
+            plt.savefig(f'{robot_name}_attack_usage.png')
+            plt.close()
+
     
 
 # return {'turns' : int, 
