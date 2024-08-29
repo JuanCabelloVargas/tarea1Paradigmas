@@ -28,9 +28,14 @@ class SoloBattle(Battle):
         self.move_counter = 0
 
         while self.robot_1.get_energy() > 0 and self.robot_2.get_energy() > 0: 
+            # Actualizar el contador de cada ataque
+            self.robot_1.update_attacks_recharge()
+            self.robot_2.update_attacks_recharge()
+
             #turnos impares, crea un ataque y luego le asigna el danio de este al otro robot, luego revisa si la vida del contrincante a disminuido a 0
             attack_1 = self.robot_1.get_move()
             if random.randint(1,100) <= attack_1.get_precision():
+                #attack_1.set_recharge()
                 self.robot_2.receive_damage(attack_1.get_damage())
                 self.stats['turns'] += 1
                 self.stats[self.r1_name]['attacks'].append(attack_1.get_description())
@@ -49,6 +54,7 @@ class SoloBattle(Battle):
             #turnos pares
             attack_2 = self.robot_2.get_move()
             if random.randint(1,100) <= attack_2.get_precision():
+                #attack_2.set_recharge()
                 self.robot_1.receive_damage(attack_2.get_damage())
                 self.stats['turns'] += 1
                 self.stats[self.r2_name]['attacks'].append(attack_2.get_description())

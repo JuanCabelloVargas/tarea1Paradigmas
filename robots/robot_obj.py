@@ -73,6 +73,8 @@ class Robot:
         available_attack_keys = [aname for aname, attack in self.attacks.items()
                            if attack.is_available()]
         selection = random.choice(available_attack_keys)
+        # agregar contador de ataque
+        self.attacks[selection].set_recharge()
         return self.attacks[selection]
     
     def get_attack(self, name: str) -> Attack:
@@ -103,4 +105,8 @@ class Robot:
             #print(at)
             text += f"({i}) {at[1].get_description()}\n"
         return f"{self.name} attacks:\n\n{text}"
+    
+    def update_attacks_recharge(self):
+        for k, at in self.attacks.items():
+            at.update_recharge()
     
