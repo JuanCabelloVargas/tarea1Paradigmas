@@ -21,7 +21,7 @@ class AttackMenu(Menu):
         selection = UserInput.get_input()
         
         
-        return available[int(selection)] if selection.isnumeric() and int(selection) > 0 and int(selection) <= len(available) else 'back' if not battle and selection == str(len(available)+1) else None
+        return available[int(selection)-1] if selection.isnumeric() and int(selection) > 0 and int(selection) <= len(available) else 'back' if not battle and selection == str(len(available)+1) else None
     ...
 
 class AbilitiesMenu(Menu):

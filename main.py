@@ -49,9 +49,10 @@ class Menu:
                 self.load_robots(filename)
             if opt == 4 and len(self.robots.items()) != 0:
                 r_opt = RobotSelection.get_menu(list(self.robots.keys()))
-                self.robots[r_opt].attack_selection(False)
+                if r_opt != None:
+                    self.robots[r_opt].attack_selection(False)
                 ...
-            if opt == 5:
+            if opt == 6:
                 break
 
             ...

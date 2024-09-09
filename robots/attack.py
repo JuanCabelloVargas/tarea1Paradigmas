@@ -19,18 +19,17 @@ class Attack:
         return self.recharge
     
     def update_recharge(self) -> None:
-        if self.recharge > 0:
-            self.recharge -= 1
+        if self.current_recharge > 0:
+            self.current_recharge -= 1
 
     def set_recharge(self) -> None:
         self.current_recharge = self.recharge
 
     def is_available(self) -> bool:
-        return True if self.recharge == 0 else False
+        return True if self.current_recharge == 0 else False
     
     def get_description(self):
         return self.attack_name
     
     def get_specs(self):
-        return f"Attack name: {self.attack_name}\n\nType: {self.attack_type}\nObjective: {self.objective}\nDamage: {self.damage}\nPrecision: {self.precision}\nRecharge: {self.recharge}"
-
+        return f"\nAttack name: {self.attack_name}\n\nType: {self.attack_type}\nObjective: {self.objective}\nDamage: {self.damage}\nPrecision: {self.precision}\nRecharge: {self.recharge}"

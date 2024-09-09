@@ -29,13 +29,14 @@ class MainMenu(Menu):
 | 2. Nuevo juego                                 |
 | 3. Cargar juego                                |
 | 4. Ver robots                                  |
+| 5. Generar Reportes                            |
 |                                                |
-| 5. Salir                                       |
+| 6. Salir                                       |
 |------------------------------------------------|
 '''
         print(text)
         selection = UserInput.get_input()
-        return int(selection) if selection.isnumeric() and int(selection) > 0 and int(selection) <= 5 else None
+        return int(selection) if selection.isnumeric() and int(selection) > 0 and int(selection) <= 6 else None
 
 
 # Que va qui? no lo se 
@@ -71,7 +72,7 @@ class RobotSelection(Menu):
         print(text)
         
         selection = UserInput.get_input()
-        return robots[int(selection)-1] if selection.isnumeric() and int(selection)-1 in list(range(len(robots))) else "back" if selection == len(robots) else None
+        return robots[int(selection)-1] if selection.isnumeric() and int(selection)-1 in list(range(len(robots))) else None
     ...
 
 class RobotAttacks(Menu):
