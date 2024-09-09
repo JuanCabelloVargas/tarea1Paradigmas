@@ -4,6 +4,7 @@ import csv
 from abc import ABC, abstractmethod
 from robots import Robot, Attack
 from competition import League
+from menus import MainMenu, RobotSelection, FileSelection
 
 
 class Menu:
@@ -12,22 +13,25 @@ class Menu:
         pass
 
     def load_robots(self, filename) -> None:
-        with open(filename, 'r') as f:
-            data = json.load(f)
-            #Now data is a dictionary
-            for rb in data["robots"]:
-                self.robots[rb['name']] = Robot(rb['name'], rb['energy'])
-            
-            print("\nRobotsloaded\nAdding attacks...\n")
-            
-            for rb in data['robots']:
-                if 'attacks' in rb:
-                    for at in rb['attacks']:
-                        self.robots[rb['name']].add_attack(at['name'], at['type'], at['objective'], at['damage'], at['precision'], at['recharge'])
-                    print("")
-                print(self.robots[rb['name']].get_attacks_list())
-            print("\nAttacks added\n")
-            #print(self.robots)
+        try:
+            with open(filename, 'r') as f:
+                data = json.load(f)
+                #Now data is a dictionary
+                for rb in data["robots"]:
+                    self.robots[rb['name']] = Robot(rb['name'], rb['energy'])
+                
+                print("\nRobotsloaded\nAdding attacks...\n")
+                
+                for rb in data['robots']:
+                    if 'attacks' in rb:
+                        for at in rb['attacks']:
+                            self.robots[rb['name']].add_attack(at['name'], at['type'], at['objective'], at['damage'], at['precision'], at['recharge'])
+                        print("")
+                    print(self.robots[rb['name']].get_attacks_list())
+                print("\nAttacks added\n")
+                #print(self.robots)
+        except Exception:
+            input("Archivo incorrecto o no encontrado. \nPresione 'enter' para continuar.")
 
 
 
@@ -36,6 +40,21 @@ class Menu:
         league.play()
         self.show_results(league)
         pass
+
+    def new_start(self):
+        while True:
+            opt = MainMenu.get_menu()
+            if opt == 1:
+                filename = FileSelection.get_menu()
+                self.load_robots(filename)
+            if opt == 4 and len(self.robots.items()) != 0:
+                r_opt = RobotSelection.get_menu(list(self.robots.keys()))
+                self.robots[r_opt].attack_selection(False)
+                ...
+            if opt == 5:
+                break
+
+            ...
 
     def show_results(self, competicion):
         print("\nResultados de la Liga:")
@@ -52,7 +71,7 @@ class Menu:
 
 
 g1 = Menu()
-g1.load_robots("data.json")
-g1.start()
+#g1.load_robots("data.json")
+g1.new_start()
     
 
