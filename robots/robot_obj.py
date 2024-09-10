@@ -40,16 +40,21 @@ class Attack:
 
 
 class Robot:
-    def __init__(self, name: str, energy: int) -> None:
+    def __init__(self, name: str, energy: int, skills=None) -> None:
         self.name = name
         self.base_energy = energy
         self.current_energy = 0
         self.attacks = {}
+        self.skills = skills if skills is not None else []
+        self.turns_passed = 0 
         pass
 
     def add_attack(self, attack_name: str, attack_type: str, objective: str, damage: int, precision: int, recharge: int) -> None:
         self.attacks[attack_name] = Attack(attack_name, attack_type, objective, damage, precision, recharge)
     
+    def add_skill(self, skill):
+        self.skills.append(skill)
+
     def get_name(self) -> str:
         return self.name
     
@@ -61,13 +66,17 @@ class Robot:
     
     #Not used 
     def receive_damage(self, damage: int) -> None:
-        self.current_energy -= damage
+        if damage is not None:
+            self.current_energy -= damage
+        else:
+            print(f"ERROR: El valor del daño recibido es None en {self.name}")
     
     def receive_attack(self, attack:Attack) -> int:
         self.current_energy -= attack.get_damage()
+        for skill in self.skills:
+            skill.check_activate(self, attack)
         return self.current_energy
-        ...
-
+        
     #Llamado 'get_move' en el otro codigo
     def get_move(self) -> Attack:
         available_attack_keys = [aname for aname, attack in self.attacks.items()
@@ -109,4 +118,10 @@ class Robot:
     def update_attacks_recharge(self):
         for k, at in self.attacks.items():
             at.update_recharge()
+
+    def next_turn(self) -> None:
+        self.turns_passed += 1
+        for skill in self.skills:
+            if skill.active_turns > 0:
+                skill.active_turns -= 1 
     

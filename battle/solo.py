@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 #Only for references
 from robots import Robot, Attack
+from robots.skills import Skill
 
 
 class SoloBattle(Battle):
@@ -28,47 +29,58 @@ class SoloBattle(Battle):
         self.move_counter = 0
 
         while self.robot_1.get_energy() > 0 and self.robot_2.get_energy() > 0: 
-            # Actualizar el contador de cada ataque
-            self.robot_1.update_attacks_recharge()
-            self.robot_2.update_attacks_recharge()
-
-            #turnos impares, crea un ataque y luego le asigna el danio de este al otro robot, luego revisa si la vida del contrincante a disminuido a 0
+            # Turno impar: robot 1 ataca
             attack_1 = self.robot_1.get_move()
-            if random.randint(1,100) <= attack_1.get_precision():
-                #attack_1.set_recharge()
-                self.robot_2.receive_damage(attack_1.get_damage())
+            if random.randint(1, 100) <= attack_1.get_precision():
+                # Verificar y activar las habilidades del robot 2
+                for skill in self.robot_2.skills:
+                    skill.check_and_activate(self.robot_2, attack_1)
+
+                # Aplicar los efectos de las habilidades activas
+                modified_damage = attack_1.get_damage()
+                for skill in self.robot_2.skills:
+                    modified_damage = skill.apply_effect(self.robot_2, attack_1)
+
+                # Aplicar el daño modificado al robot 2
+                self.robot_2.receive_damage(modified_damage)
                 self.stats['turns'] += 1
                 self.stats[self.r1_name]['attacks'].append(attack_1.get_description())
-                #Logs
-                print(f"\n{self.robot_1.get_name()} realiza {attack_1.get_description()}\n")
-                print(f"{self.robot_2.get_name()} recibe el ataque; ahora su energia es {self.robot_2.get_energy()}")
-            
+                print(f"\n{self.robot_1.get_name()} realiza {attack_1.get_description()} causando {modified_damage} de daño a {self.robot_2.get_name()}")
+                print(f"{self.robot_2.get_name()} ahora tiene {self.robot_2.get_energy()} de energía")
+
             if self.robot_2.get_energy() <= 0:
-                input(f"\n{self.r1_name} ha ganado.\nPresione 'enter' para continuar.\n>")
-                print('-' * 32)
+                print(f"\n{self.r1_name} ha ganado.")
                 self.stats[self.r1_name]['winner'] = True
                 self.stats[self.r1_name]['energy'] = self.robot_1.get_energy()
                 self.generate_attack_usage_graph()
                 return self.robot_1, self.robot_2
-            
-            #turnos pares
+
+            # Turno par: robot 2 ataca
             attack_2 = self.robot_2.get_move()
-            if random.randint(1,100) <= attack_2.get_precision():
-                #attack_2.set_recharge()
-                self.robot_1.receive_damage(attack_2.get_damage())
+            if random.randint(1, 100) <= attack_2.get_precision():
+                # Verificar y activar las habilidades del robot 1
+                for skill in self.robot_1.skills:
+                    skill.check_and_activate(self.robot_1, attack_2)
+
+                # Aplicar los efectos de las habilidades activas
+                modified_damage = attack_2.get_damage()
+                for skill in self.robot_1.skills:
+                    modified_damage = skill.apply_effect(self.robot_1, attack_2)
+
+                # Aplicar el daño modificado al robot 1
+                self.robot_1.receive_damage(modified_damage)
                 self.stats['turns'] += 1
                 self.stats[self.r2_name]['attacks'].append(attack_2.get_description())
-                #Logs
-                print(f"\n{self.robot_2.get_name()} realiza {attack_2.get_description()}\n")
-                print(f"{self.robot_1.get_name()} recibe el ataque; ahora su nergia es {self.robot_1.get_energy()}")
+                print(f"\n{self.robot_2.get_name()} realiza {attack_2.get_description()} causando {modified_damage} de daño a {self.robot_1.get_name()}")
+                print(f"{self.robot_1.get_name()} ahora tiene {self.robot_1.get_energy()} de energía")
 
             if self.robot_1.get_energy() <= 0:
-                input(f"\n{self.r2_name} ha ganado.\nPresione 'enter' para continuar.\n>")
-                print('-' * 32)
+                print(f"\n{self.r2_name} ha ganado.")
                 self.stats[self.r2_name]['winner'] = True
                 self.stats[self.r2_name]['energy'] = self.robot_2.get_energy()
                 self.generate_attack_usage_graph()
                 return self.robot_2, self.robot_1
+
             
 
     
