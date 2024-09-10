@@ -27,21 +27,17 @@ class SoloBattle(Battle):
 
     def auto_mode(self) -> tuple[Robot, Robot]:
         self.move_counter = 0
-
-        while self.robot_1.get_energy() > 0 and self.robot_2.get_energy() > 0: 
-            # Turno impar: robot 1 ataca
+        while self.robot_1.get_energy() > 0 and self.robot_2.get_energy() > 0:            
             attack_1 = self.robot_1.get_move()
-            if random.randint(1, 100) <= attack_1.get_precision():
-                # Verificar y activar las habilidades del robot 2
+            if random.randint(1, 100) <= attack_1.get_precision():          
                 for skill in self.robot_2.skills:
                     skill.check_and_activate(self.robot_2, attack_1)
 
-                # Aplicar los efectos de las habilidades activas
                 modified_damage = attack_1.get_damage()
                 for skill in self.robot_2.skills:
                     modified_damage = skill.apply_effect(self.robot_2, attack_1)
 
-                # Aplicar el daño modificado al robot 2
+             
                 self.robot_2.receive_damage(modified_damage)
                 self.stats['turns'] += 1
                 self.stats[self.r1_name]['attacks'].append(attack_1.get_description())
@@ -55,19 +51,18 @@ class SoloBattle(Battle):
                 self.generate_attack_usage_graph()
                 return self.robot_1, self.robot_2
 
-            # Turno par: robot 2 ataca
+          
             attack_2 = self.robot_2.get_move()
             if random.randint(1, 100) <= attack_2.get_precision():
-                # Verificar y activar las habilidades del robot 1
                 for skill in self.robot_1.skills:
                     skill.check_and_activate(self.robot_1, attack_2)
 
-                # Aplicar los efectos de las habilidades activas
+              
                 modified_damage = attack_2.get_damage()
                 for skill in self.robot_1.skills:
                     modified_damage = skill.apply_effect(self.robot_1, attack_2)
 
-                # Aplicar el daño modificado al robot 1
+           
                 self.robot_1.receive_damage(modified_damage)
                 self.stats['turns'] += 1
                 self.stats[self.r2_name]['attacks'].append(attack_2.get_description())

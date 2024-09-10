@@ -77,7 +77,7 @@ class Robot:
             skill.check_activate(self, attack)
         return self.current_energy
         
-    #Llamado 'get_move' en el otro codigo
+ 
     def get_move(self) -> Attack:
         available_attack_keys = [aname for aname, attack in self.attacks.items()
                            if attack.is_available()]

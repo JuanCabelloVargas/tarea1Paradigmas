@@ -24,14 +24,14 @@ class Menu:
             print("\nRobots cargados\nAñadiendo ataques...\n")
             
             for rb in data['robots']:
-                # Añadir ataques
+              
                 if 'attacks' in rb:
                     for at in rb['attacks']:
                         self.robots[rb['name']].add_attack(at['name'], at['type'], at['objective'], at['damage'], at['precision'], at['recharge'])
                     print(f"Ataques para {rb['name']}:")
                     print(self.robots[rb['name']].get_attacks_list())
 
-                # Añadir habilidades
+           
                 for rb in data['robots']:
                     if 'skills' in rb:
                         for sk in rb['skills']:
@@ -48,9 +48,9 @@ class Menu:
                             elif sk['trigger'] == 'turns':
                                 trigger = TurnsTrigger(sk['trigger_value'])
                                 print(f"Habilidad {sk['name']} tiene un trigger de tipo 'turns' con valor {sk['trigger_value']}")
-                            # Manejar otros triggers aquí
+                            
 
-                            # Crear la habilidad y agregarla al robot
+                            
                             if trigger is not None:
                                 skill = Skill(sk['name'], trigger, sk['duration'], sk['effect'], sk['objective'], sk['effect_value'])
                                 self.robots[rb['name']].add_skill(skill)

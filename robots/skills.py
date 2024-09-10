@@ -37,28 +37,28 @@ class Skill:
         return attack.get_damage()    
             
     def _apply_shield(self, robot, attack): 
-        print("-----------------ejecutando trigger shield==============================")       
+          
         return attack.get_damage() * (1 - self.effect_value / 100)
 
     def _apply_steroids(self, robot, attack):
-        print("-----------------ejecutando trigger steroids==============================")       
+       
         return attack.get_damage() * (1 + self.effect_value / 100)
 
     def _apply_hawk(self, robot, attack):
-        print("-----------------ejecutando trigger hawk==============================")
+      
         return attack.get_precision() * (1 + self.effect_value / 100)
 
     def _apply_shifting(self, robot, attack):
-        print("-----------------ejecutando trigger shifting==============================")
+     
         return attack.get_precision() * (1 - self.effect_value / 100)
 
     def _apply_fast_recharge(self, robot, attack):       
         attack.current_recharge = 0
-        print("-----------------ejecutando trigger fast recharge==============================")
+      
         return attack.get_damage()
 
     def _apply_magic(self, robot, attack=None):        
         robot.current_energy += self.effect_value
         robot.current_energy = min(robot.base_energy, robot.current_energy)
-        print("-----------------ejecutando trigger magic==============================")
+ 
         return robot.current_energy
