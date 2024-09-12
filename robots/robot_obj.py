@@ -2,7 +2,7 @@ import random
 
 # Our creations
 from robots.robot_menus import AttackMenu, UserInput
-from robots.abilities import Ability
+from robots.skills import Skill
 from robots.attack import Attack
 
 

@@ -21,4 +21,13 @@ class Competition(ABC):
     @abstractmethod
     def get_description(cls) -> str:
         return
+    
+    def ask_battle_mode(self):
+        """Pregunta al jugador si desea jugar en modo manual o automático"""
+        while True:
+            mode = input("¿Deseas jugar en modo manual o automático? (Escribe 'manual' o 'auto'): ").strip().lower()
+            if mode in ["manual", "auto"]:
+                return mode
+            else:
+                print("Entrada inválida. Por favor, escribe 'manual' o 'auto'.")
 
