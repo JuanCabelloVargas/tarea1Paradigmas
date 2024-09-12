@@ -16,6 +16,7 @@ class Robot:
         self.base_energy = energy
         self.current_energy = 0
         self.attacks = {}
+        self.unique_name = None
         pass
 
     def add_attack(self, attack_name: str, attack_type: str, objective: str, damage: int, precision: int, recharge: int) -> None:
@@ -55,7 +56,7 @@ class Robot:
     def is_alive(self) -> bool:
         return True if self.current_energy > 0 else False
     
-    # For manual mode
+    # For manual mode | Not used
     def select_attack(self, battle=True) -> Attack:
         text = ""
         while True:
@@ -94,7 +95,14 @@ class Robot:
             if sel_at in available_attack_keys:
                 return self.attacks[sel_at]
             else:
+                input("Ataque no esta disponible. Presione enter y seleccione denuevo.")
                 return self.attack_selection()
+    
+    def set_unique_name(self, name:str):
+        self.unique_name = name
+    
+    def get_unique_name(self):
+        return self.unique_name
 
 
     

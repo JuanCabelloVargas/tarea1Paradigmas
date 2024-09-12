@@ -45,3 +45,8 @@ class League(Competition):
 
             if robot_1.get_energy() <= 0:
                 return robot_2, robot_1
+    
+    @classmethod 
+    def get_description(cls):
+        return "Liga"
+    ...
