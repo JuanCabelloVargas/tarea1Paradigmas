@@ -7,7 +7,7 @@ from robots import Robot, Attack
 from competition import *
 from menus import MainMenu, RobotSelection, FileSelection, UserInput
 from robots.skills import Skill
-from robots.trigger import AttackTeamTrigger, EnergyTrigger, AttackTypeTrigger, TurnsTrigger
+from robots.trigger import *
 
 
 

@@ -2,7 +2,7 @@ from competition.competition_main import Competition
 import random
 # import battle module
 from battle.solo import SoloBattle
-#Only used for reference, 'Robot' objects aren't created here
+
 from robots.robot_obj import Robot
 
 
@@ -16,14 +16,22 @@ class League(Competition):
                 robot_1 = self.robots[i]
                 robot_2 = self.robots[j]
                 print(f"\nComienza la batalla entre {robot_1.get_name()} y {robot_2.get_name()}!")
-                # Crear objeto battle
+                
+                mode = self.ask_battle_mode()
                 bat = SoloBattle(robot_1, robot_2)
-                #winner, losser = self.simulate_battle(robot_1, robot_2)
-                winner, losser = bat.auto_mode()
+                if mode == 'manual':
+                    winner, loser =  bat.manual_mode()
+                else:
+                    winner, losser = bat.auto_mode()
                 print(f"Ganador: {winner.get_name()}, Perdedor: {losser.get_name()}")
                 self.register_results(winner, losser)
     
+    @classmethod
+    def get_description(cls) -> str:
+        return "Modo de Liga"
+    
 
+   
     # This function is not being used
     def simulate_battle(self, robot_1, robot_2):
         robot_1.reset_energy()
@@ -45,8 +53,3 @@ class League(Competition):
 
             if robot_1.get_energy() <= 0:
                 return robot_2, robot_1
-    
-    @classmethod 
-    def get_description(cls):
-        return "Liga"
-    ...
