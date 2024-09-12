@@ -6,6 +6,9 @@ from robots import Robot, Attack
 #from competition import League, SingleFastBattle
 from competition import *
 from menus import MainMenu, RobotSelection, FileSelection, UserInput
+from robots.skills import Skill
+from robots.trigger import AttackTeamTrigger, EnergyTrigger, AttackTypeTrigger, TurnsTrigger
+
 
 
 class Menu:
@@ -17,19 +20,45 @@ class Menu:
         try:
             with open(filename, 'r') as f:
                 data = json.load(f)
-                #Now data is a dictionary
+                # Ahora data es un diccionario
                 for rb in data["robots"]:
                     self.robots[rb['name']] = Robot(rb['name'], rb['energy'])
                 
-                print("\nRobotsloaded\nAdding attacks...\n")
+                print("\nRobots cargados\nAñadiendo ataques...\n")
                 
                 for rb in data['robots']:
                     if 'attacks' in rb:
                         for at in rb['attacks']:
                             self.robots[rb['name']].add_attack(at['name'], at['type'], at['objective'], at['damage'], at['precision'], at['recharge'])
                         print("")
+                    #print(f"Ataques para {rb['name']}:")
                     print(self.robots[rb['name']].get_attacks_list())
-                print("\nAttacks added\n")
+                
+                # Habilidades
+                for rb in data['robots']:
+                    if 'skills' in rb:
+                        for sk in rb['skills']:
+                            trigger = None
+                            if sk['trigger'] == 'energy':
+                                trigger = EnergyTrigger(sk['trigger_value'])
+                                print(f"Habilidad {sk['name']} tiene un trigger de tipo 'energy' con valor {sk['trigger_value']}")
+                            elif sk['trigger'] == 'attack type':
+                                trigger = AttackTypeTrigger(sk['trigger_value'])
+                                print(f"Habilidad {sk['name']} tiene un trigger de tipo 'attack type' para ataques de tipo {sk['trigger_value']}")
+                            elif sk['trigger'] == 'attack_team':
+                                trigger = AttackTeamTrigger('team')
+                                print(f"Habilidad {sk['name']} tiene un trigger de tipo 'team' activado cuando el ataque es para el equipo")
+                            elif sk['trigger'] == 'turns':
+                                trigger = TurnsTrigger(sk['trigger_value'])
+                                print(f"Habilidad {sk['name']} tiene un trigger de tipo 'turns' con valor {sk['trigger_value']}")
+                            
+
+                            
+                            if trigger is not None:
+                                skill = Skill(sk['name'], trigger, sk['duration'], sk['effect'], sk['objective'], sk['effect_value'])
+                                self.robots[rb['name']].add_skill(skill)
+                print("\nAtaques y habilidades añadidos correctamente\n")
+                #print("\nAttacks added\n")
                 #print(self.robots)
         except Exception:
             input("Archivo incorrecto o no encontrado. \nPresione 'enter' para continuar.")
@@ -98,6 +127,7 @@ class Menu:
 
 g1 = Menu()
 #g1.load_robots("data.json")
+#g1.start()
 g1.new_start()
     
 
