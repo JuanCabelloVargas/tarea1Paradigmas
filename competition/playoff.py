@@ -1,4 +1,4 @@
-from competition_main import Competition
+from competition.competition_main import Competition
 from battle.solo import SoloBattle
 from robots.robot_obj import Robot
 import random
@@ -25,4 +25,9 @@ class Playoff(Competition):
                     next_round.append(winner)
             self.robots = next_round
         print("campeon es...")
+    
+    @classmethod 
+    def get_description(cls):
+        return "PlayOff (Solo)"
+    ...
 

@@ -1,7 +1,7 @@
 from competition.competition_main import Competition, Robot
 from competition.comp_menus import *
 from battle import *
-
+from competition.team_selection import TeamCreationTool
 
 class TeamsFastBattle(Competition):
     #This part is for selection and config 
@@ -36,19 +36,14 @@ class TeamsFastBattle(Competition):
         self.enemy_team = None
         while True:
             if self.player_team == None:
-                #print("\nSeleccione un robot\n")
-                menu = TeamName()
-                name = menu.run_menu()
-                menu = TeamSelection(self.robots, name)
-                self.player_team = menu.get_select()
-                print(f"El equipo '{self.player_team['name']}' ha sido creado.\nPresiones 'enter' para continuar." if self.player_team != None else "Parametro no valido.\nPresione 'enter' para continuar.")
+                print("\nCree su equipo:\n")
+                menu = TeamCreationTool(self.robots)
+                self.player_team = menu.create()
             if self.enemy_team == None:
-                print("\nCree su equipo enemigo\n")
-                menu = TeamName()
-                name = menu.run_menu()
-                menu = TeamSelection(self.robots, name)
-                self.enemy_team = menu.get_select()
-                print(f"El equipo enemigo {self.enemy_team['name']} ha sido creado.\nPresiones 'enter' para continuar." if self.enemy_team != None else "Parametro no valido.\nPresione 'enter' para continuar.")
+                print("\nCree su equipo enemigo:\n")
+                menu = TeamCreationTool(self.robots)
+                self.enemy_team = menu.create()
+                
             if self.player_team != None and self.enemy_team != None:
                 break
     

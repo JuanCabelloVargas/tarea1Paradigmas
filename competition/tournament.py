@@ -1,7 +1,7 @@
 from battle.solo import SoloBattle
 from robots.robot_obj import Robot
-from competition_main import Competition
-from playoff import Playoff
+from competition.competition_main import Competition
+from competition.playoff import Playoff
 import random
 
 class Tournament(Competition):
@@ -38,3 +38,8 @@ class Tournament(Competition):
         print("fase de playoff entre los clasificados")
         playoff = Playoff({robot.get_name(): robot for robot in playoff_robots}) #Create the playoff using the robots that advanced to the knockout phase
         playoff.play()
+    
+    @classmethod 
+    def get_description(cls):
+        return "Torneo (Solo)"
+    ...

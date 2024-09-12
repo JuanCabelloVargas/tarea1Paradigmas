@@ -48,5 +48,5 @@ class League(Competition):
     
     @classmethod 
     def get_description(cls):
-        return "Liga"
+        return "Liga (Solo)"
     ...
